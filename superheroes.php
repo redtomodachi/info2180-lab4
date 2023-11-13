@@ -1,5 +1,7 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');
+
 $superheroes = [
   [
       "id" => 1,
@@ -62,11 +64,36 @@ $superheroes = [
       "biography" => "Notably powerful, Wanda Maximoff has fought both against and with the Avengers, attempting to hone her abilities and do what she believes is right to help the world.",
   ], 
 ];
+//get param
+$hero = filter_input(INPUT_GET, 'query'); 
+$found = "false";
 
-?>
+//if not param specified display list of all heroes
+if ($hero == ""):
+    ?>
+        <ul>
+        <?php foreach ($superheroes as $superhero): ?>
+          <li><?= $superhero['alias']; ?></li>
+        <?php endforeach; ?>
+        </ul>
+    <?php
+else:
+    //if a param is specified check if the hero is within the list and display it
+    foreach ($superheroes as $superhero):
+        if ($superhero['alias'] == $hero or $superhero['name'] == $hero):
+            $found = "true";
+            ?><h3><?= $superhero['alias']; ?></h3>
+            <h4> A.K.A <?= $superhero['name']; ?></h4>
+            <p><?= $superhero['biography']; ?></p>
+            <?php
+        endif;
+    endforeach;
+    //otherwise hero is not in list display superhero not found
+    if ($found == "false"):
+        ?> <p style="color:#990000"> <b>Superhero not found</b> </p> <?php
+    endif;
+endif;
 
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
+
+    
+    ?>

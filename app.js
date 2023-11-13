@@ -1,11 +1,14 @@
-function searchList()
+function search()
 {
+    var result = document.getElementById("result");
+    var info = document.getElementById("hero");
+    console.log("it works")
     var xammy = new XMLHttpRequest();
     xammy.onreadystatechange = function() {
         if(xammy.readyState === XMLHttpRequest.DONE){
             if(xammy.status === 200)
             {
-                alert(xammy.responseText)
+                result.innerHTML = xammy.responseText
             } 
             else
             {
@@ -13,9 +16,8 @@ function searchList()
             }
         }
     }
+    xammy.open("GET",`http://localhost/info2180-lab4/superheroes.php?query=${info.value}`,false)
 
-    xammy.open('GET',"http://localhost/info2180-lab4/superheroes.php",true)
-    xammy.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xammy.send();
 }
 
@@ -25,6 +27,6 @@ function searchList()
 window.onload = function() {
     console.log("Page loaded");
     var  but = document.getElementById("Btn");
-    but.addEventListener("click", searchList);
+    but.addEventListener("click", search);
 
 };
